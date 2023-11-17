@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+        - azuriteStorage 
+    environment:  # Agrega las variables de ambiente aquí
+        - DATABASE_CONNECTION_STRING=Server=sql-server;Database=Community;User=sa;Password=Password123
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: Password123
+      ACCEPT_EULA: Y
+    ports:
+      - "1433:1433"
+  azuriteStorage:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: 'azurite-console'
+    hostname: azurite
+    restart: always
+    command: 'azurite --oauth basic --cert /workspace/127.0.0.1.pem --key /workspace/127.0.0.1-key.pem'
+    ports:
+        - 10000:10000
+        - 10001:10001
+        - 10002:10002
+    volumes:
+         - c:/azurite:/data
