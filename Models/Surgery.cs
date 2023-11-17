@@ -1,12 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace API.Models;
 
-public class Diagnostic
+public class Surgery
 {
-    [Key]
-    public int DiagnosticId { get; set; }
+    public int SurgeryId { get; set; }
     public string Title { get; set; }
+    public DateTime Creation { get; set; }
+    public string Description { get; set; }
     public Inscription Inscription { get; set; }
     public int InscriptionId { get; set; }
     public Animal Animal { get; set; }

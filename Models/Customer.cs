@@ -1,6 +1,9 @@
-namespace Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace API.Models;
 public class Customer : Person
 {
+    [Key]
     public int CustomerId { get; set; }
     public string UserName { get; set; }
     public string HashPassword { get; set; }
