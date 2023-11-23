@@ -5,6 +5,7 @@ namespace API.Models;
 public class Clinic
 {
     [Key]
+    [Required]
     public int ClinicId { get; set; }
     public string Name { get; set; }
     public string PhoneNumber{get;set;}
@@ -12,6 +13,9 @@ public class Clinic
     public string Email {get;set;}
     public string UserName {get;set;}
     public string HashPassword {get;set;}
+    #region Relations
+    public ICollection<Direction> Directions { get;set;}
     public ICollection<Inscription> inscriptions { get; set; }
+    #endregion
 
 }

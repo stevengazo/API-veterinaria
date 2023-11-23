@@ -1,7 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace API.Models;
 
 public abstract class Person
 {
+    [Key]
+    [Required]
     public int PersonId { get; set; }
     public int DNI { get; set; }
     public string IdentificationType { get; set; }
