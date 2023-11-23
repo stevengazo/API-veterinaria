@@ -40,7 +40,8 @@ namespace API.Controllers
           {
               return NotFound();
           }
-            var canton = await _context.Cantons.FindAsync(id);
+            var canton = await _context.Cantons.Include(e => e.Province).FirstOrDefaultAsync(f => f.CantonId == id);
+            canton.Province.Cantons = null;
 
             if (canton == null)
             {

@@ -13,7 +13,6 @@ public class Canton
     #region Relations
     public ICollection<District> Districts { get; set; }
 
-    [ForeignKey(nameof(ProvinceId))]
     public Province? Province { get; set; }
     public int ProvinceId { get; set; }
     #endregion

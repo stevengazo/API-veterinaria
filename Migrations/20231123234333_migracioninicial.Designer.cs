@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(VeterinarianDB))]
-    [Migration("20231123032153_initialCreate")]
-    partial class initialCreate
+    [Migration("20231123234333_migracioninicial")]
+    partial class migracioninicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
