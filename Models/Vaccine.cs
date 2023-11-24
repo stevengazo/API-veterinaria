@@ -11,11 +11,9 @@ public class Vaccine{
     public int AplicationDate {get;set;}
 
     #region Relations
-    [ForeignKey(nameof(InscriptionId))]
     public Inscription? Inscription { get; set; }
     public int? InscriptionId { get; set; }
-    [ForeignKey(nameof(AnimalId))]
-    public Animal Animal { get; set; }
+    public Animal? Animal { get; set; }
     public int AnimalId { get; set; }
     #endregion
 }

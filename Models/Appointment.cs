@@ -14,13 +14,10 @@ public class Appointment
 
     #region Relations
 
-    [ForeignKey(nameof(InscriptionId))]
     public Inscription? Inscription { get; set; }
     public int? InscriptionId { get; set; }
 
-    [Required]
-    [ForeignKey(nameof(AnimalId))]
-    public Animal Animal { get; set; }
+    public Animal? Animal { get; set; }
     public int AnimalId { get; set; }
 
     #endregion

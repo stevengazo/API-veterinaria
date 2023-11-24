@@ -13,12 +13,10 @@ public class Surgery
     public string Description { get; set; }
 
     #region Relations
-    [ForeignKey(nameof(InscriptionId))] 
     public Inscription? Inscription { get; set; }
     public int? InscriptionId { get; set; }
 
-    [ForeignKey(nameof(AnimalId))]
-    public Animal Animal { get; set; }
+    public Animal? Animal { get; set; }
     public int AnimalId { get; set; }
     #endregion
 }

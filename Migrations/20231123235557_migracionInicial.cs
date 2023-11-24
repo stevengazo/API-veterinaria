@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class migracioninicial : Migration
+    public partial class migracionInicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -171,6 +171,7 @@ namespace API.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     URLImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    customerPersonId = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
                     TypeAnimalId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -178,8 +179,8 @@ namespace API.Migrations
                 {
                     table.PrimaryKey("PK_Animals", x => x.AnimalId);
                     table.ForeignKey(
-                        name: "FK_Animals_Customers_PersonId",
-                        column: x => x.PersonId,
+                        name: "FK_Animals_Customers_customerPersonId",
+                        column: x => x.customerPersonId,
                         principalTable: "Customers",
                         principalColumn: "PersonId",
                         onDelete: ReferentialAction.Cascade);
@@ -197,6 +198,7 @@ namespace API.Migrations
                 {
                     InscriptionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    VeterinarianPersonId = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
                     ClinicId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -210,8 +212,8 @@ namespace API.Migrations
                         principalColumn: "ClinicId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Inscriptions_veterinarians_PersonId",
-                        column: x => x.PersonId,
+                        name: "FK_Inscriptions_veterinarians_VeterinarianPersonId",
+                        column: x => x.VeterinarianPersonId,
                         principalTable: "veterinarians",
                         principalColumn: "PersonId",
                         onDelete: ReferentialAction.Cascade);
@@ -226,6 +228,7 @@ namespace API.Migrations
                     DirectionDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DistrictId = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
+                    CustomerPersonId = table.Column<int>(type: "int", nullable: false),
                     ClinicId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -238,8 +241,8 @@ namespace API.Migrations
                         principalColumn: "ClinicId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Directions_Customers_PersonId",
-                        column: x => x.PersonId,
+                        name: "FK_Directions_Customers_CustomerPersonId",
+                        column: x => x.CustomerPersonId,
                         principalTable: "Customers",
                         principalColumn: "PersonId",
                         onDelete: ReferentialAction.Cascade);
@@ -281,7 +284,8 @@ namespace API.Migrations
                 name: "Diagnostics",
                 columns: table => new
                 {
-                    DiagnosticId = table.Column<int>(type: "int", nullable: false),
+                    DiagnosticId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InscriptionId = table.Column<int>(type: "int", nullable: true),
                     AnimalId = table.Column<int>(type: "int", nullable: false)
@@ -296,8 +300,8 @@ namespace API.Migrations
                         principalColumn: "AnimalId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Diagnostics_Inscriptions_DiagnosticId",
-                        column: x => x.DiagnosticId,
+                        name: "FK_Diagnostics_Inscriptions_InscriptionId",
+                        column: x => x.InscriptionId,
                         principalTable: "Inscriptions",
                         principalColumn: "InscriptionId");
                 });
@@ -386,9 +390,9 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Animals_PersonId",
+                name: "IX_Animals_customerPersonId",
                 table: "Animals",
-                column: "PersonId");
+                column: "customerPersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Animals_TypeAnimalId",
@@ -421,19 +425,24 @@ namespace API.Migrations
                 column: "AnimalId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Diagnostics_InscriptionId",
+                table: "Diagnostics",
+                column: "InscriptionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Directions_ClinicId",
                 table: "Directions",
                 column: "ClinicId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Directions_CustomerPersonId",
+                table: "Directions",
+                column: "CustomerPersonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Directions_DistrictId",
                 table: "Directions",
                 column: "DistrictId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Directions_PersonId",
-                table: "Directions",
-                column: "PersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Districts_CantonId",
@@ -446,9 +455,9 @@ namespace API.Migrations
                 column: "ClinicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inscriptions_PersonId",
+                name: "IX_Inscriptions_VeterinarianPersonId",
                 table: "Inscriptions",
-                column: "PersonId");
+                column: "VeterinarianPersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipes_AnimalId",

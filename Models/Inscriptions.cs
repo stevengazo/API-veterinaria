@@ -12,13 +12,13 @@ public class Inscription
 
     #region Relations
 
-    [ForeignKey(nameof(PersonId))]
-    public Veterinarian Veterinarian { get; set; }
+
+    public Veterinarian? Veterinarian { get; set; }
     public int PersonId { get; set; }
 
     public int ClinicId { get; set; }
-    [ForeignKey(nameof(ClinicId))]
-    public Clinic Clinic { get; set; }
+
+    public Clinic? Clinic { get; set; }
 
     [DeleteBehavior(DeleteBehavior.NoAction)]
     public ICollection<Appointment>? Appointments { get; set; }

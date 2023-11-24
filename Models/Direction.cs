@@ -10,16 +10,16 @@ public class Direction
     public int DirectionId { get; set; }
     public string DirectionDescription { get; set; }
     #region Relations
-    [ForeignKey(nameof(DistrictId))]
+
     public District District { get; set; }
     public int DistrictId { get; set; }
 
     public int PersonId { get; set; }
-    [ForeignKey(nameof(PersonId))]
-    public Customer Customer { get; set; }
+  
+    public Customer? Customer { get; set; }
 
     public int ClinicId { get; set; }
-    [ForeignKey(nameof(ClinicId))]
-    public Clinic Clinic { get; set; } 
+ 
+    public Clinic? Clinic { get; set; } 
     #endregion
 }

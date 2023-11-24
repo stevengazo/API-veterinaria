@@ -14,12 +14,12 @@ public class Recipe{
 
     #region Relations
     public int? InscriptionId { get; set; }
-    [ForeignKey(nameof(InscriptionId))]
+
     public Inscription? Inscription { get; set; }
 
     public int AnimalId { get; set; }
-    [ForeignKey(nameof(AnimalId))]
-    public Animal Animal { get; set; }
+
+    public Animal? Animal { get; set; }
     #endregion
 
 }

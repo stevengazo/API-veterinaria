@@ -9,8 +9,8 @@ public class Customer : Person
     #region Relations
     public ICollection<Animal> Animals { get; set; }
 
-    [ForeignKey(nameof(SexId))]
-    public Sex Sex { get; set; } 
+
+    public Sex? Sex { get; set; } 
     public int SexId { get; set; }
     #endregion
 

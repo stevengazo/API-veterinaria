@@ -13,13 +13,11 @@ public class Animal
     public bool IsActive { get; set; }
 
     #region Dependencies
-    [ForeignKey(nameof(PersonId))]
-    public Customer customer { get; set; }
+
+    public Customer? customer { get; set; }
     public int PersonId { get; set; }
     public int TypeAnimalId { get; set; }
-    [Required]
-    [ForeignKey(nameof(TypeAnimalId))]
-    public TypeAnimal TypeAnimal {get;set;}
+    public TypeAnimal? TypeAnimal {get;set;}
 
     #endregion
 
