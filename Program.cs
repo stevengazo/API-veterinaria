@@ -14,7 +14,15 @@ builder.Services.AddDbContext<VeterinarianDB>(options => options.UseSqlServer(co
 
 
 // Dependency Injection Of blobStorage
-builder.Services.AddSingleton( Data=> new BlobServiceClient(ConnectionStringBlobStorage));
+try
+{
+    builder.Services.AddSingleton(Data => new BlobServiceClient(ConnectionStringBlobStorage));
+}
+catch (Exception f)
+{
+
+    throw new Exception("BlobStorage service Error");
+}
 
 
 

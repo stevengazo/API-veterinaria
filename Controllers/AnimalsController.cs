@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Azure.Storage.Blobs;
 using API.DBContexts;
 using API.Models;
+using Microsoft.AspNetCore.Identity;
+using Azure.Storage.Blobs.Models;
 
 namespace API.Controllers
 {
@@ -15,10 +18,12 @@ namespace API.Controllers
     public class AnimalsController : ControllerBase
     {
         private readonly VeterinarianDB _context;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public AnimalsController(VeterinarianDB context)
+        public AnimalsController(VeterinarianDB context, BlobServiceClient blobService)
         {
             _context = context;
+            _blobServiceClient = blobService;
         }
 
         // GET: api/Animals
@@ -31,6 +36,32 @@ namespace API.Controllers
           }
             return await _context.Animals.ToListAsync();
         }
+        // GET: api/Animals
+        [HttpGet("ejemplo")]
+        public async Task<ActionResult<IEnumerable<BlobContainerItem>>> ejemplo()
+        {
+            var sampleContainer = _blobServiceClient.GetBlobContainers().ToList();
+            return sampleContainer.ToList();
+        }
+
+        
+
+        [HttpPost("UploadFile/{id}")]
+        public async Task<ActionResult> UploadFile(IFormFile data, int id)
+        {
+            var Container = _blobServiceClient.GetBlobContainers().FirstOrDefault();
+            if (Container != null)
+            {
+               using(var stream = data.OpenReadStream()) {
+                    _blobServiceClient.GetBlobContainerClient(Container.Name).UploadBlob(data.FileName, stream, CancellationToken.None);
+                }
+
+            }
+
+            return Ok();
+        }
+
+
 
         // GET: api/Animals/5
         [HttpGet("{id}")]
