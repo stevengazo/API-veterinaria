@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,64 +7,60 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.DBContexts;
 using API.Models;
-using Microsoft.AspNetCore.Cors;
 
 namespace API.Controllers
 {
-    
-    [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
-    public class CantonsController : ControllerBase
+    public class ClinicController : ControllerBase
     {
         private readonly VeterinarianDB _context;
 
-        public CantonsController(VeterinarianDB context)
+        public ClinicController(VeterinarianDB context)
         {
             _context = context;
         }
 
-        // GET: api/Cantons
+        // GET: api/Clinic
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Canton>>> GetCantons()
+        public async Task<ActionResult<IEnumerable<Clinic>>> GetClinics()
         {
-          if (_context.Cantons == null)
+          if (_context.Clinics == null)
           {
               return NotFound();
           }
-            return await _context.Cantons.ToListAsync();
+            return await _context.Clinics.ToListAsync();
         }
 
-        // GET: api/Cantons/5
+        // GET: api/Clinic/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Canton>> GetCanton(int id)
+        public async Task<ActionResult<Clinic>> GetClinic(int id)
         {
-          if (_context.Cantons == null)
+          if (_context.Clinics == null)
           {
               return NotFound();
           }
-            var canton = await _context.Cantons.Include(e => e.Province).FirstOrDefaultAsync(f => f.CantonId == id);
-            canton.Province.Cantons = null;
+            var clinic = await _context.Clinics.FindAsync(id);
 
-            if (canton == null)
+            if (clinic == null)
             {
                 return NotFound();
             }
 
-            return canton;
+            return clinic;
         }
 
-        // PUT: api/Cantons/5
+        // PUT: api/Clinic/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCanton(int id, Canton canton)
+        public async Task<IActionResult> PutClinic(int id, Clinic clinic)
         {
-            if (id != canton.CantonId)
+            if (id != clinic.ClinicId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(canton).State = EntityState.Modified;
+            _context.Entry(clinic).State = EntityState.Modified;
 
             try
             {
@@ -72,7 +68,7 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CantonExists(id))
+                if (!ClinicExists(id))
                 {
                     return NotFound();
                 }
@@ -85,44 +81,44 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // POST: api/Cantons
+        // POST: api/Clinic
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Canton>> PostCanton(Canton canton)
+        public async Task<ActionResult<Clinic>> PostClinic(Clinic clinic)
         {
-          if (_context.Cantons == null)
+          if (_context.Clinics == null)
           {
-              return Problem("Entity set 'VeterinarianDB.Cantons'  is null.");
+              return Problem("Entity set 'VeterinarianDB.Clinics'  is null.");
           }
-            _context.Cantons.Add(canton);
+            _context.Clinics.Add(clinic);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCanton", new { id = canton.CantonId }, canton);
+            return CreatedAtAction("GetClinic", new { id = clinic.ClinicId }, clinic);
         }
 
-        // DELETE: api/Cantons/5
+        // DELETE: api/Clinic/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCanton(int id)
+        public async Task<IActionResult> DeleteClinic(int id)
         {
-            if (_context.Cantons == null)
+            if (_context.Clinics == null)
             {
                 return NotFound();
             }
-            var canton = await _context.Cantons.FindAsync(id);
-            if (canton == null)
+            var clinic = await _context.Clinics.FindAsync(id);
+            if (clinic == null)
             {
                 return NotFound();
             }
 
-            _context.Cantons.Remove(canton);
+            _context.Clinics.Remove(clinic);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CantonExists(int id)
+        private bool ClinicExists(int id)
         {
-            return (_context.Cantons?.Any(e => e.CantonId == id)).GetValueOrDefault();
+            return (_context.Clinics?.Any(e => e.ClinicId == id)).GetValueOrDefault();
         }
     }
 }

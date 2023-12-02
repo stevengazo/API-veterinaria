@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,56 +15,55 @@ namespace API.Controllers
     [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
-    public class CantonsController : ControllerBase
+    public class AppointmentController : ControllerBase
     {
         private readonly VeterinarianDB _context;
 
-        public CantonsController(VeterinarianDB context)
+        public AppointmentController(VeterinarianDB context)
         {
             _context = context;
         }
 
-        // GET: api/Cantons
+        // GET: api/Appointment
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Canton>>> GetCantons()
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
         {
-          if (_context.Cantons == null)
+          if (_context.Appointments == null)
           {
               return NotFound();
           }
-            return await _context.Cantons.ToListAsync();
+            return await _context.Appointments.ToListAsync();
         }
 
-        // GET: api/Cantons/5
+        // GET: api/Appointment/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Canton>> GetCanton(int id)
+        public async Task<ActionResult<Appointment>> GetAppointment(int id)
         {
-          if (_context.Cantons == null)
+          if (_context.Appointments == null)
           {
               return NotFound();
           }
-            var canton = await _context.Cantons.Include(e => e.Province).FirstOrDefaultAsync(f => f.CantonId == id);
-            canton.Province.Cantons = null;
+            var appointment = await _context.Appointments.FindAsync(id);
 
-            if (canton == null)
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            return canton;
+            return appointment;
         }
 
-        // PUT: api/Cantons/5
+        // PUT: api/Appointment/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCanton(int id, Canton canton)
+        public async Task<IActionResult> PutAppointment(int id, Appointment appointment)
         {
-            if (id != canton.CantonId)
+            if (id != appointment.AppointmentId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(canton).State = EntityState.Modified;
+            _context.Entry(appointment).State = EntityState.Modified;
 
             try
             {
@@ -72,7 +71,7 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CantonExists(id))
+                if (!AppointmentExists(id))
                 {
                     return NotFound();
                 }
@@ -85,44 +84,44 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // POST: api/Cantons
+        // POST: api/Appointment
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Canton>> PostCanton(Canton canton)
+        public async Task<ActionResult<Appointment>> PostAppointment(Appointment appointment)
         {
-          if (_context.Cantons == null)
+          if (_context.Appointments == null)
           {
-              return Problem("Entity set 'VeterinarianDB.Cantons'  is null.");
+              return Problem("Entity set 'VeterinarianDB.Appointments'  is null.");
           }
-            _context.Cantons.Add(canton);
+            _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCanton", new { id = canton.CantonId }, canton);
+            return CreatedAtAction("GetAppointment", new { id = appointment.AppointmentId }, appointment);
         }
 
-        // DELETE: api/Cantons/5
+        // DELETE: api/Appointment/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCanton(int id)
+        public async Task<IActionResult> DeleteAppointment(int id)
         {
-            if (_context.Cantons == null)
+            if (_context.Appointments == null)
             {
                 return NotFound();
             }
-            var canton = await _context.Cantons.FindAsync(id);
-            if (canton == null)
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            _context.Cantons.Remove(canton);
+            _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CantonExists(int id)
+        private bool AppointmentExists(int id)
         {
-            return (_context.Cantons?.Any(e => e.CantonId == id)).GetValueOrDefault();
+            return (_context.Appointments?.Any(e => e.AppointmentId == id)).GetValueOrDefault();
         }
     }
 }
