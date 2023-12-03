@@ -13,6 +13,8 @@ using Azure.Storage.Blobs.Models;
 using Azure.Storage;
 using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Cors;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace API.Controllers
 {
@@ -42,17 +44,20 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            return await _context.Animals.ToListAsync();
+            /*    var options = new JsonSerializerOptions
+                {
+                    WriteIndented= true,
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                };
+                return Ok(
+                    JsonSerializer.Serialize(await _context.Animals
+                        .Include(D => D.customer)
+                        .Include(D => D.TypeAnimal)
+                        .ToListAsync(), options)
+                );
+            */
+           return  await _context.Animals.ToListAsync();
         }
-        // GET: api/Animals
-        [HttpGet("ejemplo")]
-        public async Task<ActionResult<IEnumerable<BlobContainerItem>>> ejemplo()
-        {
-            var sampleContainer = _blobServiceClient.GetBlobContainers().ToList();
-            return sampleContainer.ToList();
-        }
-
-
 
         [HttpPost("UploadFile/{id}")]
         public async Task<ActionResult<string>> UploadFile(IFormFile data, int id)
@@ -60,7 +65,7 @@ namespace API.Controllers
 
             Animal AnimalSelected = _context.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
 
-            if (AnimalSelected !=null)
+            if (AnimalSelected != null)
             {
                 string containerName = "images";
                 var container = _blobServiceClient.GetBlobContainerClient(containerName);

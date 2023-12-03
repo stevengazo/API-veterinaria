@@ -8,9 +8,11 @@ public class Customer : Person
     [Required]
     public int CustomerId { get; set; }
     public string UserName { get; set; }
-    public string HashPassword { get; set; }
+    public string HashPassword { private get;  set; }
     #region Relations
     public ICollection<Animal> Animals { get; set; }
+
+
 
 
     #endregion
