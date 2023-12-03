@@ -12,13 +12,13 @@ services:
       - db
       - azurite
     environment:
-      - ConnectionStrings__Veterinarian=Data Source=db,1433;Initial Catalog=Veterinarian;User=sa;Password=TuPasswordSuperSeguro;Integrated Security=False;trustservercertificate=true
+      - ConnectionStrings__Veterinarian=Data Source=db,1433;Initial Catalog=Veterinarian;User=sa;Password=Password123;Integrated Security=False;trustservercertificate=true
       - ConnectionStrings__BlobStorage=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;QueueEndpoint=http://azurite:10001/devstoreaccount1;TableEndpoint=http://azurite:10002/devstoreaccount1;
 
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      SA_PASSWORD: "TuPasswordSuperSeguro"
+      SA_PASSWORD: Password123
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Express"
     ports:
