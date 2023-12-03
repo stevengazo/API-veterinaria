@@ -1,4 +1,9 @@
-﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+﻿create Database Veterinarian
+go
+use Veterinarian
+go
+
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
         [MigrationId] nvarchar(150) NOT NULL,
@@ -6,9 +11,6 @@ BEGIN
         CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
     );
 END;
-GO
-
-BEGIN TRANSACTION;
 GO
 
 CREATE TABLE [Clinics] (
