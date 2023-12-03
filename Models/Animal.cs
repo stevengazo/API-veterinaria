@@ -15,7 +15,8 @@ public class Animal
     #region Dependencies
 
     public Customer? customer { get; set; }
-    public int PersonId { get; set; }
+    
+    public int CustomerId { get; set; }
     public int TypeAnimalId { get; set; }
     public TypeAnimal? TypeAnimal {get;set;}
 

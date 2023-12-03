@@ -14,7 +14,7 @@ public class Inscription
 
 
     public Veterinarian? Veterinarian { get; set; }
-    public int PersonId { get; set; }
+    public int VeterinarianId  { get; set; }
 
     public int ClinicId { get; set; }
 

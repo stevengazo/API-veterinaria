@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(VeterinarianDB))]
-    [Migration("20231123235557_migracionInicial")]
-    partial class migracionInicial
+    [Migration("20231203000614_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,14 +33,14 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnimalId"));
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
 
                     b.Property<int>("TypeAnimalId")
                         .HasColumnType("int");
@@ -49,14 +49,11 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("customerPersonId")
-                        .HasColumnType("int");
-
                     b.HasKey("AnimalId");
 
-                    b.HasIndex("TypeAnimalId");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("customerPersonId");
+                    b.HasIndex("TypeAnimalId");
 
                     b.ToTable("Animals");
                 });
@@ -125,13 +122,15 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("URLLogo")
                         .IsRequired()
@@ -148,11 +147,11 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Customer", b =>
                 {
-                    b.Property<int>("PersonId")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<int>("DNI")
                         .HasColumnType("int");
@@ -191,7 +190,7 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PersonId");
+                    b.HasKey("CustomerId");
 
                     b.HasIndex("SexId");
 
@@ -236,7 +235,7 @@ namespace API.Migrations
                     b.Property<int>("ClinicId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerPersonId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("DirectionDescription")
@@ -253,7 +252,7 @@ namespace API.Migrations
 
                     b.HasIndex("ClinicId");
 
-                    b.HasIndex("CustomerPersonId");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DistrictId");
 
@@ -293,17 +292,14 @@ namespace API.Migrations
                     b.Property<int>("ClinicId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VeterinarianPersonId")
+                    b.Property<int>("VeterinarianId")
                         .HasColumnType("int");
 
                     b.HasKey("InscriptionId");
 
                     b.HasIndex("ClinicId");
 
-                    b.HasIndex("VeterinarianPersonId");
+                    b.HasIndex("VeterinarianId");
 
                     b.ToTable("Inscriptions");
                 });
@@ -459,11 +455,11 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Veterinarian", b =>
                 {
-                    b.Property<int>("PersonId")
+                    b.Property<int>("VeterinarianId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VeterinarianId"));
 
                     b.Property<int>("DNI")
                         .HasColumnType("int");
@@ -494,7 +490,7 @@ namespace API.Migrations
                     b.Property<int>("SexId")
                         .HasColumnType("int");
 
-                    b.HasKey("PersonId");
+                    b.HasKey("VeterinarianId");
 
                     b.HasIndex("SexId");
 
@@ -503,15 +499,15 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Animal", b =>
                 {
-                    b.HasOne("API.Models.TypeAnimal", "TypeAnimal")
+                    b.HasOne("API.Models.Customer", "customer")
                         .WithMany("Animals")
-                        .HasForeignKey("TypeAnimalId")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Models.Customer", "customer")
+                    b.HasOne("API.Models.TypeAnimal", "TypeAnimal")
                         .WithMany("Animals")
-                        .HasForeignKey("customerPersonId")
+                        .HasForeignKey("TypeAnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -588,9 +584,7 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("API.Models.District", "District")
                         .WithMany("Directions")
@@ -626,7 +620,7 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Veterinarian", "Veterinarian")
                         .WithMany("Inscriptions")
-                        .HasForeignKey("VeterinarianPersonId")
+                        .HasForeignKey("VeterinarianId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
