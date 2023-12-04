@@ -35,6 +35,7 @@ namespace API.Controllers
             return await _context.Appointments.ToListAsync();
         }
 
+
         // GET: api/Appointment/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Appointment>> GetAppointment(int id)

@@ -21,14 +21,23 @@ namespace API.Controllers
             _context = context;
         }
 
+        [HttpGet("GetDiagnosticByAnimal/{id}")]
+        public async Task<ActionResult<IEnumerable<Diagnostic>>> GetDiagnosticByAnimal(int id)
+        {
+            return await _context.Diagnostics
+            .Include(D=>D.Inscription.Veterinarian)
+            .Include(D=>D.Inscription.Clinic)
+            .Where(D => D.AnimalId == id).ToListAsync();
+        }
+
         // GET: api/Diagnostic
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Diagnostic>>> GetDiagnostics()
         {
-          if (_context.Diagnostics == null)
-          {
-              return NotFound();
-          }
+            if (_context.Diagnostics == null)
+            {
+                return NotFound();
+            }
             return await _context.Diagnostics.ToListAsync();
         }
 
@@ -36,10 +45,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Diagnostic>> GetDiagnostic(int id)
         {
-          if (_context.Diagnostics == null)
-          {
-              return NotFound();
-          }
+            if (_context.Diagnostics == null)
+            {
+                return NotFound();
+            }
             var diagnostic = await _context.Diagnostics.FindAsync(id);
 
             if (diagnostic == null)
@@ -86,10 +95,10 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Diagnostic>> PostDiagnostic(Diagnostic diagnostic)
         {
-          if (_context.Diagnostics == null)
-          {
-              return Problem("Entity set 'VeterinarianDB.Diagnostics'  is null.");
-          }
+            if (_context.Diagnostics == null)
+            {
+                return Problem("Entity set 'VeterinarianDB.Diagnostics'  is null.");
+            }
             _context.Diagnostics.Add(diagnostic);
             await _context.SaveChangesAsync();
 
