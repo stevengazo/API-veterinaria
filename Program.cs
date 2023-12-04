@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using API.DBContexts;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,14 @@ if(string.IsNullOrEmpty(connectionStringVeterinarian)){
 
 
 // Dependency Injection of Database
-builder.Services.AddDbContext<VeterinarianDB>(options => options.UseSqlServer(connectionStringVeterinarian)).BuildServiceProvider();
+builder.Services.AddDbContext<VeterinarianDB>(options => options.UseSqlServer(connectionStringVeterinarian))
+                .BuildServiceProvider();
 
 // Dependency Injection Of blobStorage
 builder.Services.AddSingleton(Data => new BlobServiceClient(ConnectionStringBlobStorage));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddJsonOptions(X=> X.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

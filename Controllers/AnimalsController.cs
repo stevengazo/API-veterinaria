@@ -18,7 +18,7 @@ using System.Text.Json.Serialization;
 
 namespace API.Controllers
 {
-    [EnableCors("AllowAny")]
+
     [Route("api/[controller]")]
     [ApiController]
     public class AnimalsController : ControllerBase
@@ -44,19 +44,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            /*    var options = new JsonSerializerOptions
-                {
-                    WriteIndented= true,
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                };
-                return Ok(
-                    JsonSerializer.Serialize(await _context.Animals
-                        .Include(D => D.customer)
-                        .Include(D => D.TypeAnimal)
-                        .ToListAsync(), options)
-                );
-            */
-           return  await _context.Animals.ToListAsync();
+             return  await _context.Animals.Include(A=>A.customer).Include(A=>A.TypeAnimal).ToListAsync();
         }
 
         [HttpPost("UploadFile/{id}")]
@@ -73,13 +61,13 @@ namespace API.Controllers
                 {
                     using (var stream = data.OpenReadStream())
                     {
-                        var blobName = data.FileName;
+                        var blobName =  $"Image_{AnimalSelected.AnimalId}_{AnimalSelected.Name}.{Path.GetExtension( data.FileName)}"  ;
 
                         // Sube el blob al contenedor
                         _blobServiceClient.GetBlobContainerClient(containerName).UploadBlob(blobName, stream, CancellationToken.None);
 
                         // Obtiene la SAS para el blob
-                        var expiry = DateTime.UtcNow.AddHours(1); // Por ejemplo, la SAS será válida durante 1 hora
+                        var expiry = DateTime.UtcNow.AddYears(10); // Por ejemplo, la SAS será válida durante 1 hora
                         var sas = GetSasForBlob(blobName, containerName, expiry, BlobAccountSasPermissions.Read);
 
                         // Construye y devuelve la URL pública
@@ -105,7 +93,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            var animal = await _context.Animals.FindAsync(id);
+            var animal = await _context.Animals.Include(a=>a.customer).Include(a=>a.TypeAnimal).FirstAsync(F=>F.AnimalId == id);
 
             if (animal == null)
             {
