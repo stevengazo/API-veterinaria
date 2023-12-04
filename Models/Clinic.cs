@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Models;
 
-public class Clinic
+public class Clinic : IdentityUser
 {
     [Key]
     [Required]

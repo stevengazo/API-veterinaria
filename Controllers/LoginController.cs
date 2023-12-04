@@ -36,11 +36,11 @@ public class AuthenticateService : UserInterface
 
     [Route("api/[controller]")]
     [ApiController]
-public class AuthController : ControllerBase
+public class LoginController : ControllerBase
 {
     private readonly AuthenticateService _authService;
 
-    public AuthController(AuthenticateService authService)
+    public LoginController(AuthenticateService authService)
     {
         _authService = authService;
     }
