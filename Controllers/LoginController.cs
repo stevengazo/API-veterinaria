@@ -15,11 +15,11 @@ namespace API.Controllers{
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class LoginController : ControllerBase
 {
     private readonly VeterinarianDB _context;
 
-    public AuthController(VeterinarianDB context)
+    public LoginController(VeterinarianDB context)
     {
         _context = context;
     }
