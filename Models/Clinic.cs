@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace API.Models;
 
-public class Clinic : IdentityUser
+public class Clinic 
 {
     [Key]
     [Required]
