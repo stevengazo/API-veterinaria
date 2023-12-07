@@ -12,61 +12,33 @@ using API.Models;
 namespace API.Controllers{
 
 
-public interface UserInterface
-{
-    Task<bool> AuthenticateAsync(string userName, string password);
-}
-
-public class AuthenticateService : UserInterface
-{
-    private readonly SignInManager<Clinic> _signInManager;
-
-    public AuthenticateService(SignInManager<Clinic> signInManager)
-    {
-        _signInManager = signInManager;
-    }
-
-    public async Task<bool> AuthenticateAsync(string userName, string password)
-    {
-        var result = await _signInManager.PasswordSignInAsync(userName, password, false, lockoutOnFailure: false);
-
-        return result.Succeeded;
-    }
-}
 
     [Route("api/[controller]")]
     [ApiController]
-public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
 {
-    private readonly AuthenticateService _authService;
+    private readonly VeterinarianDB _context;
 
-    public LoginController(AuthenticateService authService)
+    public AuthController(VeterinarianDB context)
     {
-        _authService = authService;
+        _context = context;
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
-        if (!ModelState.IsValid)
+        var login = await _context.Clinics
+            .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);
+
+        if (login == null)
         {
-            return BadRequest("Invalid model");
+            return Unauthorized();
         }
 
-        var isAuthenticated = await _authService.AuthenticateAsync(model.UserName, model.HashPassword);
+        // Aquí puedes generar un token de autenticación si lo deseas.
 
-        if (isAuthenticated)
-        {
-            // Usuario autenticado
-            return Ok(new { Message = "Login successful" });
-        }
-        else
-        {
-            // Autenticación fallida
-            return Unauthorized(new { Message = "Invalid credentials" });
-        }
+        return Ok(new { Message = "Login exitoso" });
     }
 }
-
 
 }

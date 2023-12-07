@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace API.Models;
 
-public class Login : IdentityUser
+public class Login 
 {
     [Required]
     public string UserName { get; set; }
