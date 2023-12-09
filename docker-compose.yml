@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api:
-    image: tu-proyecto-api:latest
+    image: api-veterinarian:latest
     build:
       context: .
       dockerfile: Dockerfile

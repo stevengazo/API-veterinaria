@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.DBContexts;
 using API.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace API.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class ProvincesController : ControllerBase
@@ -33,6 +35,7 @@ namespace API.Controllers
         }
 
         // GET: api/Provinces/5
+        [EnableCors("AllowAnyOrigin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Province>> GetProvince(int id)
         {
