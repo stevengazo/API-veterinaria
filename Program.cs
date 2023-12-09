@@ -11,7 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionStringVeterinarian = builder.Configuration.GetConnectionString("Veterinarian");
 string ConnectionStringBlobStorage = builder.Configuration.GetConnectionString("BlobStorage");
 
-if(string.IsNullOrEmpty(connectionStringVeterinarian)){
+if (string.IsNullOrEmpty(connectionStringVeterinarian))
+{
     throw new Exception("La cadena de conexión Veterinarian no ha sido especificada");
 }
 
@@ -24,22 +25,20 @@ builder.Services.AddDbContext<VeterinarianDB>(options => options.UseSqlServer(co
 builder.Services.AddSingleton(Data => new BlobServiceClient(ConnectionStringBlobStorage));
 
 builder.Services.AddControllers()
-                .AddJsonOptions(X=> X.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+                .AddJsonOptions(X => X.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Enable CORS
-const string CorsName = "DefaultPolicy";
+const string myOrigins = "_myallowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
-    options.DefaultPolicyName = CorsName;
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-    });
+    options.AddPolicy(  name: myOrigins,
+                        policy =>
+                        {
+                            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                        });
 });
 
 var app = builder.Build();
@@ -47,9 +46,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbcontext = scope.ServiceProvider.GetRequiredService<VeterinarianDB>();
-    if(dbcontext.Database.CanConnect()){
+    if (dbcontext.Database.CanConnect())
+    {
         Console.WriteLine("Ya existe la base de datos");
-    }else{
+    }
+    else
+    {
         Console.WriteLine("La base de datos no existe. Intentando crearla");
         try
         {
@@ -63,6 +65,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -75,9 +78,10 @@ else
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Aplication of CORS
+app.UseCors(myOrigins);
 
-app.UseCors();
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
