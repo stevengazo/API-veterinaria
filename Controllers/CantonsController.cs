@@ -32,7 +32,7 @@ namespace API.Controllers
           {
               return NotFound();
           }
-            return await _context.Cantons.ToListAsync();
+            return await _context.Cantons.Include(C=>C.Districts).ToListAsync();
         }
 
         // GET: api/Cantons/5
