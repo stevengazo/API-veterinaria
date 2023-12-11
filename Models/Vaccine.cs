@@ -8,7 +8,8 @@ public class Vaccine{
     [Required]
     public int VaccineId { get; set; }
     public string Title{get;set;}
-    public int AplicationDate {get;set;}
+    public string Description {get;set;}
+    public DateTime AplicationDate {get;set;}
 
     #region Relations
     public Inscription? Inscription { get; set; }

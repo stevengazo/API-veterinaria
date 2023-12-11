@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -96,7 +96,6 @@ namespace API.Migrations
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HashPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DNI = table.Column<int>(type: "int", nullable: false),
                     IdentificationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -171,6 +170,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     URLImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     TypeAnimalId = table.Column<int>(type: "int", nullable: false)
@@ -285,6 +285,8 @@ namespace API.Migrations
                     DiagnosticId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InscriptionId = table.Column<int>(type: "int", nullable: true),
                     AnimalId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -367,7 +369,8 @@ namespace API.Migrations
                     VaccineId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AplicationDate = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AplicationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InscriptionId = table.Column<int>(type: "int", nullable: true),
                     AnimalId = table.Column<int>(type: "int", nullable: false)
                 },

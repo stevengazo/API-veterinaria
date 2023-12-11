@@ -15,6 +15,7 @@ using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Cors;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Azure.Storage.Blobs.Specialized;
 
 namespace API.Controllers
 {
@@ -62,7 +63,8 @@ namespace API.Controllers
                     using (var stream = data.OpenReadStream())
                     {
                         var blobName =  $"Image_{AnimalSelected.AnimalId}_{AnimalSelected.Name}.{Path.GetExtension( data.FileName)}"  ;
-
+                        var d = _blobServiceClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
+                        d.DeleteIfExists();
                         // Sube el blob al contenedor
                         _blobServiceClient.GetBlobContainerClient(containerName).UploadBlob(blobName, stream, CancellationToken.None);
 

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NuGet.Common;
 
 namespace API.Models;
 
@@ -10,6 +11,7 @@ public class Animal
     public int AnimalId { get; set; }
     public string? Name { get; set; }
     public string URLImage {get;set;}
+    public DateTime Birthday {get;set;}
     public bool IsActive { get; set; }
 
     #region Dependencies

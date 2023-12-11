@@ -21,6 +21,16 @@ namespace API.Controllers
             _context = context;
         }
 
+
+        [HttpGet("GetByAnimal/{id}")]
+        public async Task<ActionResult<IEnumerable<Surgery>>> GetByAnimal(int id)
+        {
+            return await _context.Surgeries
+                    .Include(D => D.Inscription.Veterinarian)
+                    .Include(D => D.Inscription.Clinic)
+                    .Where(D => D.AnimalId == id)
+                    .ToListAsync();
+        }
         // GET: api/Surgery
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Surgery>>> GetSurgeries()
