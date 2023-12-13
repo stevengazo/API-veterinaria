@@ -35,10 +35,10 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Surgery>>> GetSurgeries()
         {
-          if (_context.Surgeries == null)
-          {
-              return NotFound();
-          }
+            if (_context.Surgeries == null)
+            {
+                return NotFound();
+            }
             return await _context.Surgeries.ToListAsync();
         }
 
@@ -46,10 +46,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Surgery>> GetSurgery(int id)
         {
-          if (_context.Surgeries == null)
-          {
-              return NotFound();
-          }
+            if (_context.Surgeries == null)
+            {
+                return NotFound();
+            }
             var surgery = await _context.Surgeries.FindAsync(id);
 
             if (surgery == null)
@@ -96,13 +96,16 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Surgery>> PostSurgery(Surgery surgery)
         {
-          if (_context.Surgeries == null)
-          {
-              return Problem("Entity set 'VeterinarianDB.Surgeries'  is null.");
-          }
+            if (_context.Surgeries == null)
+            {
+                return Problem("Entity set 'VeterinarianDB.Surgeries'  is null.");
+            }
             _context.Surgeries.Add(surgery);
             await _context.SaveChangesAsync();
-
+            surgery = _context.Surgeries
+                                .Include(D => D.Inscription.Veterinarian)
+                                .Include(D => D.Inscription.Clinic)
+                                .First(i=> i.SurgeryId == surgery.SurgeryId);
             return CreatedAtAction("GetSurgery", new { id = surgery.SurgeryId }, surgery);
         }
 
