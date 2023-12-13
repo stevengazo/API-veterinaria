@@ -33,7 +33,7 @@ namespace API.Controllers
         }
 
         // GET: api/Clinic/5
-        [HttpGet("{username}")]
+        [HttpGet("username")]
         public async Task<ActionResult<Clinic>> GetClinic(int id)
         {
           if (_context.Clinics == null)
