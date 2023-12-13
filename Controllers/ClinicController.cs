@@ -33,13 +33,8 @@ namespace API.Controllers
         }
 
         // GET: api/Clinic/5
-<<<<<<< HEAD
-        [HttpGet("username")]
-        public async Task<ActionResult<Clinic>> GetClinic(int id)
-=======
         [HttpGet("{UserName}")]
         public async Task<ActionResult<Clinic>> GetClinic(String UserName)
->>>>>>> origin/main
         {
           if (_context.Clinics == null)
           {
