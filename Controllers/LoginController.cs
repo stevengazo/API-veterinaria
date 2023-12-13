@@ -21,7 +21,7 @@ namespace API.Controllers{
         _context = context;
     }
 
-    [HttpPost("login")]
+    [HttpPost("Clinic")]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
         var login = await _context.Clinics
