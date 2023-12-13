@@ -33,22 +33,28 @@ namespace API.Controllers
         }
 
         // GET: api/Clinic/5
+<<<<<<< HEAD
         [HttpGet("username")]
         public async Task<ActionResult<Clinic>> GetClinic(int id)
+=======
+        [HttpGet("{UserName}")]
+        public async Task<ActionResult<Clinic>> GetClinic(String UserName)
+>>>>>>> origin/main
         {
           if (_context.Clinics == null)
           {
               return NotFound();
           }
-            var clinic = await _context.Clinics.FindAsync(id);
+            var clinic = _context.Clinics.Where((e) => e.UserName == UserName).FirstOrDefault();
 
             if (clinic == null)
             {
                 return NotFound();
             }
-
+            //clinic.HashPassword=String.Empty;
             return clinic;
         }
+
 
         // PUT: api/Clinic/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

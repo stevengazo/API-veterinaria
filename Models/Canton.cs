@@ -11,7 +11,7 @@ public class Canton
     public string Name { get; set; }
 
     #region Relations
-    public ICollection<District> Districts { get; set; }
+    public ICollection<District>? Districts { get; set; }
 
     public Province? Province { get; set; }
     public int ProvinceId { get; set; }

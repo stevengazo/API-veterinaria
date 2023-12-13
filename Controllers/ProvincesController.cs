@@ -31,7 +31,7 @@ namespace API.Controllers
           {
               return NotFound();
           }
-            return await _context.Provinces.ToListAsync();
+            return await _context.Provinces.Include(P=>P.Cantons).ThenInclude(C=>C.Districts).ToListAsync();
         }
 
         // GET: api/Provinces/5

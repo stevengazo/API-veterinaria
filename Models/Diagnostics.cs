@@ -9,6 +9,8 @@ public class Diagnostic
     [Required]
     public int DiagnosticId { get; set; }
     public string Title { get; set; }
+    public string Description {get;set;}
+    public DateTime CreationDate {get;set;}
 
     #region Relations
 

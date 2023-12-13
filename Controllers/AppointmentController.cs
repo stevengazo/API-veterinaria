@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Cors;
 
 namespace API.Controllers
 {
-    
-    [EnableCors("AllowAny")]
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class AppointmentController : ControllerBase
@@ -24,14 +24,41 @@ namespace API.Controllers
             _context = context;
         }
 
+        [HttpGet("GetByClinic/{id}")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetByClinic(int id)
+        {
+ 
+            return await _context.Appointments
+                        .Include(D => D.Inscription.Veterinarian)
+                        .Include(D => D.Inscription.Clinic)
+                        .Where(D => D.Inscription.ClinicId == id )
+                        .Include(A => A.Animal)
+                        .ThenInclude(A => A.customer)
+                        .OrderByDescending(a => a.DateToMeet)
+                        .ToListAsync();
+        }
+
+        [HttpGet("GetByAnimal/{id}")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetByAnimal(int id)
+        {
+            return await _context.Appointments
+                        .Include(D => D.Inscription.Veterinarian)
+                        .Include(D => D.Inscription.Clinic)
+                        .Where(D => D.AnimalId == id)
+                        .Include(A => A.Animal)
+                        .ThenInclude(A => A.customer)
+                        .OrderByDescending(a => a.DateToMeet)
+                        .ToListAsync();
+        }
+
         // GET: api/Appointment
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
         {
-          if (_context.Appointments == null)
-          {
-              return NotFound();
-          }
+            if (_context.Appointments == null)
+            {
+                return NotFound();
+            }
             return await _context.Appointments.ToListAsync();
         }
 
@@ -40,10 +67,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Appointment>> GetAppointment(int id)
         {
-          if (_context.Appointments == null)
-          {
-              return NotFound();
-          }
+            if (_context.Appointments == null)
+            {
+                return NotFound();
+            }
             var appointment = await _context.Appointments.FindAsync(id);
 
             if (appointment == null)
@@ -90,10 +117,10 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Appointment>> PostAppointment(Appointment appointment)
         {
-          if (_context.Appointments == null)
-          {
-              return Problem("Entity set 'VeterinarianDB.Appointments'  is null.");
-          }
+            if (_context.Appointments == null)
+            {
+                return Problem("Entity set 'VeterinarianDB.Appointments'  is null.");
+            }
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
 
