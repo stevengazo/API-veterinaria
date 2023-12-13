@@ -19,5 +19,4 @@ public class Clinic
     public ICollection<Direction> Directions { get; set; }
     public ICollection<Inscription> inscriptions { get; set; }
     #endregion
-
 }
