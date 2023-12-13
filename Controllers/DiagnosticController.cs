@@ -22,8 +22,9 @@ namespace API.Controllers
         }
 
         [HttpGet("GetDiagnosticByAnimal/{id}")]
-        public async Task<ActionResult<IEnumerable<Diagnostic>>> GetDiagnosticByAnimal(int id)
+        public async Task<ActionResult<List<Diagnostic>>> GetDiagnosticByAnimal(int id)
         {
+
             return await _context.Diagnostics
             .Include(D=>D.Inscription.Veterinarian)
             .Include(D=>D.Inscription.Clinic)

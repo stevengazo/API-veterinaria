@@ -22,7 +22,7 @@ namespace API.Controllers{
     }
 
     [HttpPost("Clinic")]
-    public async Task<IActionResult> Login([FromBody] Login model)
+    public async Task<IActionResult> Clinic([FromBody] Login model)
     {
         var login = await _context.Clinics
             .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);

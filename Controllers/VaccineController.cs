@@ -21,14 +21,24 @@ namespace API.Controllers
             _context = context;
         }
 
+        [HttpGet("GetByAnimal/{id}")]
+        public async Task<ActionResult<IEnumerable<Vaccine>>> GetByAnimal(int id){
+            return await _context.Vaccines
+            .Include(D => D.Inscription.Veterinarian)
+            .Include(D => D.Inscription.Clinic)
+            .Where(D => D.AnimalId == id)
+            .ToListAsync();
+        }
+
+
         // GET: api/Vaccine
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vaccine>>> GetVaccines()
         {
-          if (_context.Vaccines == null)
-          {
-              return NotFound();
-          }
+            if (_context.Vaccines == null)
+            {
+                return NotFound();
+            }
             return await _context.Vaccines.ToListAsync();
         }
 
@@ -36,10 +46,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Vaccine>> GetVaccine(int id)
         {
-          if (_context.Vaccines == null)
-          {
-              return NotFound();
-          }
+            if (_context.Vaccines == null)
+            {
+                return NotFound();
+            }
             var vaccine = await _context.Vaccines.FindAsync(id);
 
             if (vaccine == null)
@@ -86,10 +96,10 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Vaccine>> PostVaccine(Vaccine vaccine)
         {
-          if (_context.Vaccines == null)
-          {
-              return Problem("Entity set 'VeterinarianDB.Vaccines'  is null.");
-          }
+            if (_context.Vaccines == null)
+            {
+                return Problem("Entity set 'VeterinarianDB.Vaccines'  is null.");
+            }
             _context.Vaccines.Add(vaccine);
             await _context.SaveChangesAsync();
 
