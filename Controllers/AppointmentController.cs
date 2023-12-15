@@ -51,6 +51,19 @@ namespace API.Controllers
                         .ToListAsync();
         }
 
+        [HttpGet("GetByVeterinarian/{id}")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetByVeterinarian(int id)
+        {
+            return await _context.Appointments
+                        .Include(D => D.Inscription.Veterinarian)
+                        .Include(D => D.Inscription.Clinic)
+                        .Where(D => D.InscriptionId == id)
+                        .Include(A => A.Animal)
+                        .ThenInclude(A => A.customer)
+                        .OrderByDescending(a => a.DateToMeet)
+                        .ToListAsync();
+        }
+
         // GET: api/Appointment
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
