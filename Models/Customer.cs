@@ -10,7 +10,7 @@ public class Customer : Person
     public string UserName { get; set; }
     public string HashPassword { private get;  set; }
     #region Relations
-    public ICollection<Animal> Animals { get; set; }
+    public ICollection<Animal>? Animals { get; set; }
 
 
 
