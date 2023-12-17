@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(VeterinarianDB))]
-    [Migration("20231211024109_InitialCreate")]
+    [Migration("20231217173708_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -107,6 +107,92 @@ namespace API.Migrations
                     b.HasIndex("ProvinceId");
 
                     b.ToTable("Cantons");
+
+                    b.HasData(
+                        new
+                        {
+                            CantonId = 1,
+                            Name = "San José",
+                            ProvinceId = 1
+                        },
+                        new
+                        {
+                            CantonId = 2,
+                            Name = "San Pedro",
+                            ProvinceId = 1
+                        },
+                        new
+                        {
+                            CantonId = 3,
+                            Name = "Alajuela",
+                            ProvinceId = 2
+                        },
+                        new
+                        {
+                            CantonId = 4,
+                            Name = "Grecia",
+                            ProvinceId = 2
+                        },
+                        new
+                        {
+                            CantonId = 5,
+                            Name = "Cartago",
+                            ProvinceId = 3
+                        },
+                        new
+                        {
+                            CantonId = 6,
+                            Name = "Paraíso",
+                            ProvinceId = 3
+                        },
+                        new
+                        {
+                            CantonId = 7,
+                            Name = "Santo Domingo",
+                            ProvinceId = 4
+                        },
+                        new
+                        {
+                            CantonId = 8,
+                            Name = "San Pablo",
+                            ProvinceId = 4
+                        },
+                        new
+                        {
+                            CantonId = 9,
+                            Name = "Puntarenas",
+                            ProvinceId = 5
+                        },
+                        new
+                        {
+                            CantonId = 10,
+                            Name = "Quepos",
+                            ProvinceId = 5
+                        },
+                        new
+                        {
+                            CantonId = 11,
+                            Name = "Limón",
+                            ProvinceId = 6
+                        },
+                        new
+                        {
+                            CantonId = 12,
+                            Name = "Guapiles",
+                            ProvinceId = 6
+                        },
+                        new
+                        {
+                            CantonId = 13,
+                            Name = "Guanacaste",
+                            ProvinceId = 7
+                        },
+                        new
+                        {
+                            CantonId = 14,
+                            Name = "Nicoya",
+                            ProvinceId = 7
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Clinic", b =>
@@ -163,6 +249,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("HashPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IdentificationType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -194,6 +284,22 @@ namespace API.Migrations
                     b.HasIndex("SexId");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            DNI = 11111,
+                            Email = "sample@mail.com",
+                            HashPassword = "default",
+                            IdentificationType = "National",
+                            LastName = "Prueba",
+                            Name = "nombre",
+                            PhoneNumber = 888888,
+                            SecondLastName = "prueba",
+                            SexId = 1,
+                            UserName = "default"
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Diagnostic", b =>
@@ -285,6 +391,176 @@ namespace API.Migrations
                     b.HasIndex("CantonId");
 
                     b.ToTable("Districts");
+
+                    b.HasData(
+                        new
+                        {
+                            DistrictId = 1,
+                            CantonId = 1,
+                            Name = "San Miguel"
+                        },
+                        new
+                        {
+                            DistrictId = 2,
+                            CantonId = 1,
+                            Name = "Escazú"
+                        },
+                        new
+                        {
+                            DistrictId = 3,
+                            CantonId = 2,
+                            Name = "San Pedro"
+                        },
+                        new
+                        {
+                            DistrictId = 4,
+                            CantonId = 2,
+                            Name = "San Rafael"
+                        },
+                        new
+                        {
+                            DistrictId = 5,
+                            CantonId = 3,
+                            Name = "Alajuela"
+                        },
+                        new
+                        {
+                            DistrictId = 6,
+                            CantonId = 3,
+                            Name = "San Ramón"
+                        },
+                        new
+                        {
+                            DistrictId = 7,
+                            CantonId = 4,
+                            Name = "Grecia"
+                        },
+                        new
+                        {
+                            DistrictId = 8,
+                            CantonId = 4,
+                            Name = "Sarchí"
+                        },
+                        new
+                        {
+                            DistrictId = 9,
+                            CantonId = 5,
+                            Name = "Cartago"
+                        },
+                        new
+                        {
+                            DistrictId = 10,
+                            CantonId = 5,
+                            Name = "Paraíso"
+                        },
+                        new
+                        {
+                            DistrictId = 11,
+                            CantonId = 6,
+                            Name = "Santo Domingo"
+                        },
+                        new
+                        {
+                            DistrictId = 12,
+                            CantonId = 6,
+                            Name = "San Vicente"
+                        },
+                        new
+                        {
+                            DistrictId = 13,
+                            CantonId = 7,
+                            Name = "Santo Domingo"
+                        },
+                        new
+                        {
+                            DistrictId = 14,
+                            CantonId = 7,
+                            Name = "San Juanillo"
+                        },
+                        new
+                        {
+                            DistrictId = 15,
+                            CantonId = 8,
+                            Name = "San Pablo"
+                        },
+                        new
+                        {
+                            DistrictId = 16,
+                            CantonId = 8,
+                            Name = "San Isidro"
+                        },
+                        new
+                        {
+                            DistrictId = 17,
+                            CantonId = 9,
+                            Name = "Puntarenas"
+                        },
+                        new
+                        {
+                            DistrictId = 18,
+                            CantonId = 9,
+                            Name = "Chacarita"
+                        },
+                        new
+                        {
+                            DistrictId = 19,
+                            CantonId = 10,
+                            Name = "Quepos"
+                        },
+                        new
+                        {
+                            DistrictId = 20,
+                            CantonId = 10,
+                            Name = "Parrita"
+                        },
+                        new
+                        {
+                            DistrictId = 21,
+                            CantonId = 11,
+                            Name = "Limón"
+                        },
+                        new
+                        {
+                            DistrictId = 22,
+                            CantonId = 11,
+                            Name = "Guácimo"
+                        },
+                        new
+                        {
+                            DistrictId = 23,
+                            CantonId = 12,
+                            Name = "Guápiles"
+                        },
+                        new
+                        {
+                            DistrictId = 24,
+                            CantonId = 12,
+                            Name = "Siquirres"
+                        },
+                        new
+                        {
+                            DistrictId = 25,
+                            CantonId = 13,
+                            Name = "Liberia"
+                        },
+                        new
+                        {
+                            DistrictId = 26,
+                            CantonId = 13,
+                            Name = "Santa Cruz"
+                        },
+                        new
+                        {
+                            DistrictId = 27,
+                            CantonId = 14,
+                            Name = "Nicoya"
+                        },
+                        new
+                        {
+                            DistrictId = 28,
+                            CantonId = 14,
+                            Name = "Santa Cruz"
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Inscription", b =>
@@ -325,6 +601,43 @@ namespace API.Migrations
                     b.HasKey("ProvinceId");
 
                     b.ToTable("Provinces");
+
+                    b.HasData(
+                        new
+                        {
+                            ProvinceId = 1,
+                            Name = "San José"
+                        },
+                        new
+                        {
+                            ProvinceId = 2,
+                            Name = "Alajuela"
+                        },
+                        new
+                        {
+                            ProvinceId = 3,
+                            Name = "Cartago"
+                        },
+                        new
+                        {
+                            ProvinceId = 4,
+                            Name = "Heredia"
+                        },
+                        new
+                        {
+                            ProvinceId = 5,
+                            Name = "Puntarenas"
+                        },
+                        new
+                        {
+                            ProvinceId = 6,
+                            Name = "Limón"
+                        },
+                        new
+                        {
+                            ProvinceId = 7,
+                            Name = "Guanacaste"
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Recipe", b =>
@@ -376,6 +689,23 @@ namespace API.Migrations
                     b.HasKey("SexId");
 
                     b.ToTable("Sexes");
+
+                    b.HasData(
+                        new
+                        {
+                            SexId = 1,
+                            Name = "Hombre"
+                        },
+                        new
+                        {
+                            SexId = 2,
+                            Name = "Mujer"
+                        },
+                        new
+                        {
+                            SexId = 3,
+                            Name = "Otro"
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Surgery", b =>
@@ -427,6 +757,33 @@ namespace API.Migrations
                     b.HasKey("TypeAnimalId");
 
                     b.ToTable("TypeAnimals");
+
+                    b.HasData(
+                        new
+                        {
+                            TypeAnimalId = 1,
+                            TypeName = "Perro"
+                        },
+                        new
+                        {
+                            TypeAnimalId = 2,
+                            TypeName = "Gato"
+                        },
+                        new
+                        {
+                            TypeAnimalId = 3,
+                            TypeName = "Conejo"
+                        },
+                        new
+                        {
+                            TypeAnimalId = 4,
+                            TypeName = "Ave"
+                        },
+                        new
+                        {
+                            TypeAnimalId = 5,
+                            TypeName = "Cabra"
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Vaccine", b =>

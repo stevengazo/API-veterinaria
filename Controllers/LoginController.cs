@@ -9,33 +9,50 @@ using Microsoft.AspNetCore.Identity;
 using API.DBContexts;
 using API.Models;
 
-namespace API.Controllers{
+namespace API.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
-{
-    private readonly VeterinarianDB _context;
-
-    public LoginController(VeterinarianDB context)
     {
-        _context = context;
-    }
+        private readonly VeterinarianDB _context;
 
-    [HttpPost("Clinic")]
-    public async Task<IActionResult> Clinic([FromBody] Login model)
-    {
-        var login = await _context.Clinics
-            .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);
-
-        if (login == null)
+        public LoginController(VeterinarianDB context)
         {
-            return Unauthorized();
+            _context = context;
         }
 
-        // Aquí puedes generar un token de autenticación si lo deseas.
+        [HttpPost("Clinic")]
+        public async Task<IActionResult> Clinic([FromBody] Login model)
+        {
+            var login = await _context.Clinics
+                .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);
 
-        return Ok(new { Message = "Login exitoso" });
+            if (login == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(new { Message = "Login exitoso" });
+        }
+
+
+        [HttpPost("Customer")]
+        public async Task<IActionResult> Customer([FromBody] Login model)
+        {
+            var login = await _context.Customers
+                .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);
+
+            if (login == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                return Ok(login);
+            }
+
+        }
     }
-}
 
 }
