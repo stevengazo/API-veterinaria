@@ -123,8 +123,14 @@ namespace API.Controllers
             }
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
+            var value = await _context.Appointments                        
+                        .Include(D => D.Inscription.Veterinarian)
+                        .Include(D => D.Inscription.Clinic)
+                        .Include(A => A.Animal)
+                        .Include(a=>a.Animal.customer)
+                        .FirstAsync(d=> d.AppointmentId == appointment.AppointmentId);
 
-            return CreatedAtAction("GetAppointment", new { id = appointment.AppointmentId }, appointment);
+            return CreatedAtAction("GetAppointment", new { id = value.AppointmentId }, value);
         }
 
         // DELETE: api/Appointment/5

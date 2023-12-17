@@ -29,7 +29,10 @@ namespace API.Controllers
           {
               return NotFound();
           }
-            return await _context.Districts.ToListAsync();
+            return await _context.Districts
+            .Include(i=>i.Canton)
+            .ThenInclude(i=>i.Province)
+            .ToListAsync();
         }
 
         // GET: api/Districts/5

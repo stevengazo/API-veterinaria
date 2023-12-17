@@ -78,6 +78,7 @@ else
     app.UseSwaggerUI();
 }
 
+
 // Aplication of CORS
 app.UseCors(myOrigins);
 

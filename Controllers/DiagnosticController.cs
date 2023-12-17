@@ -26,8 +26,8 @@ namespace API.Controllers
         {
 
             return await _context.Diagnostics
-            .Include(D=>D.Inscription.Veterinarian)
-            .Include(D=>D.Inscription.Clinic)
+            .Include(D => D.Inscription.Veterinarian)
+            .Include(D => D.Inscription.Clinic)
             .Where(D => D.AnimalId == id).ToListAsync();
         }
 
@@ -102,8 +102,12 @@ namespace API.Controllers
             }
             _context.Diagnostics.Add(diagnostic);
             await _context.SaveChangesAsync();
+            var value = await _context.Diagnostics
+                .Include(D => D.Inscription.Veterinarian)
+                .Include(D => D.Inscription.Clinic)
+                .FirstOrDefaultAsync(d => d.DiagnosticId == diagnostic.DiagnosticId);
 
-            return CreatedAtAction("GetDiagnostic", new { id = diagnostic.DiagnosticId }, diagnostic);
+            return CreatedAtAction("GetDiagnostic", new { id = value.DiagnosticId }, value);
         }
 
         // DELETE: api/Diagnostic/5

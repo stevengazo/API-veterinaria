@@ -100,8 +100,12 @@ namespace API.Controllers
           }
             _context.Recipes.Add(recipe);
             await _context.SaveChangesAsync();
+            var newRecipe = await _context.Recipes  
+            .Include(D=>D.Inscription.Veterinarian)
+            .Include(D=>D.Inscription.Clinic)
+            .FirstOrDefaultAsync(x=>x.RecipeId == recipe.RecipeId);
 
-            return CreatedAtAction("GetRecipe", new { id = recipe.RecipeId }, recipe);
+            return CreatedAtAction("GetRecipe", new { id = newRecipe.RecipeId }, newRecipe);
         }
 
         // DELETE: api/Recipe/5

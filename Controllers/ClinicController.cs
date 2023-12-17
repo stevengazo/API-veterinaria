@@ -25,10 +25,10 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Clinic>>> GetClinics()
         {
-          if (_context.Clinics == null)
-          {
-              return NotFound();
-          }
+            if (_context.Clinics == null)
+            {
+                return NotFound();
+            }
             return await _context.Clinics.ToListAsync();
         }
 
@@ -36,10 +36,10 @@ namespace API.Controllers
         [HttpGet("{UserName}")]
         public async Task<ActionResult<Clinic>> GetClinic(String UserName)
         {
-          if (_context.Clinics == null)
-          {
-              return NotFound();
-          }
+            if (_context.Clinics == null)
+            {
+                return NotFound();
+            }
             var clinic = _context.Clinics.Where((e) => e.UserName == UserName).FirstOrDefault();
 
             if (clinic == null)
@@ -87,14 +87,22 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Clinic>> PostClinic(Clinic clinic)
         {
-          if (_context.Clinics == null)
-          {
-              return Problem("Entity set 'VeterinarianDB.Clinics'  is null.");
-          }
-            _context.Clinics.Add(clinic);
-            await _context.SaveChangesAsync();
+            try
+            {
+                if (_context.Clinics == null)
+                {
+                    return Problem("Entity set 'VeterinarianDB.Clinics'  is null.");
+                }
+                _context.Clinics.Add(clinic);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetClinic", new { id = clinic.ClinicId }, clinic);
+                return Ok("Creado");
+            }
+            catch (System.Exception r)
+            {
+                return Problem(r.Message);
+            }
+
         }
 
         // DELETE: api/Clinic/5
