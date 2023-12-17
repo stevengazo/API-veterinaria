@@ -16,7 +16,7 @@ public class Clinic
     public string HashPassword { get; set; }
     public bool IsActive { get; set; }
     #region Relations
-    public ICollection<Direction> Directions { get; set; }
-    public ICollection<Inscription> inscriptions { get; set; }
+    public ICollection<Direction>? Directions { get; set; }
+    public ICollection<Inscription>? inscriptions { get; set; }
     #endregion
 }
