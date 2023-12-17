@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   api:
-    image: api-veterinarian:latest
     build:
       context: .
       dockerfile: Dockerfile

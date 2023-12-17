@@ -11,7 +11,7 @@ public class Direction
     public string DirectionDescription { get; set; }
     #region Relations
 
-    public District District { get; set; }
+    public District? District { get; set; }
     public int DistrictId { get; set; }
 
     public int PersonId { get; set; }

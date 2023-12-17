@@ -102,6 +102,10 @@ namespace API.Controllers
             }
             _context.Vaccines.Add(vaccine);
             await _context.SaveChangesAsync();
+            vaccine = await _context.Vaccines
+                        .Include(D=>D.Inscription.Veterinarian)
+                        .Include(D=>D.Inscription.Clinic)
+                        .FirstOrDefaultAsync(x=>x.VaccineId == vaccine.VaccineId);
 
             return CreatedAtAction("GetVaccine", new { id = vaccine.VaccineId }, vaccine);
         }
