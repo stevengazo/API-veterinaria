@@ -52,6 +52,24 @@ namespace API.Controllers
             return veterinarian;
         }
 
+        //Get last id
+        [HttpGet("lastVeterinarianId")]
+        public async Task<ActionResult<Veterinarian>> GetLastVeterinarianId()
+        {
+            try
+            {
+                var lastId = await _context.veterinarians.OrderByDescending(v => v.VeterinarianId)
+                                                         .Select(v => v.VeterinarianId)
+                                                         .FirstOrDefaultAsync();
+
+                return Ok(lastId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
         // PUT: api/Veterinarian/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -83,19 +101,20 @@ namespace API.Controllers
             return NoContent();
         }
 
+
         // POST: api/Veterinarian
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Clinic>> PostVeterinarian(Veterinarian veterinarian)
+        public async Task<ActionResult<Veterinarian>> PostVeterinarian(Veterinarian veterinarian)
         {
             if (_context.veterinarians == null)
             {
-                return Problem("Entity set 'VeterinarianDB.Clinics'  is null.");
+                return Problem("Entity set 'VeterinarianDB.Veterinarians'  is null.");
             }
             _context.veterinarians.Add(veterinarian);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetClinic", new { id = veterinarian.VeterinarianId }, veterinarian);
+            return CreatedAtAction("GetVeterinarian", new { id = veterinarian.VeterinarianId }, veterinarian);
         }
 
         // DELETE: api/Veterinarian/5
