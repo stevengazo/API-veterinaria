@@ -32,6 +32,42 @@ namespace API.Controllers
             return await _context.Clinics.ToListAsync();
         }
 
+        // GET: api/Clinic
+        [HttpGet("SearchClinics/{id}")]
+        public async Task<ActionResult<IEnumerable<Clinic>>> SearchClinics(int id)
+        {
+            var data = await _context.Clinics.FromSqlRaw(@" SELECT
+                                                            C.*
+                                                        FROM
+                                                            Clinics AS C
+                                                            inner JOIN
+
+                                                            (SELECT
+                                                                Dir.ClinicId,
+                                                                D.DistrictId,
+                                                                PR.ProvinceId
+                                                            FROM
+                                                                Districts AS D
+                                                                INNER JOIN
+                                                                Cantons AS CA on Ca.CantonId = D.CantonId
+                                                                INNER JOIN
+                                                                Provinces AS PR ON PR.ProvinceId = Ca.CantonId
+                                                                INNER JOIN 
+                                                                Directions as Dir on  Dir.DirectionId = D.DistrictId
+                                                            where 
+                                                                PR.ProvinceId = {0}
+                                                                ) as TEMPO
+                                                            ON TEMPO.ClinicId = c.ClinicId", id).ToArrayAsync();
+              if(data == null)
+              {
+                    return NotFound();
+              }
+             else{
+                return Ok(data);
+             }
+        }
+
+
         // GET: api/Clinic/5
         [HttpGet("{UserName}")]
         public async Task<ActionResult<Clinic>> GetClinic(String UserName)
@@ -192,7 +228,7 @@ namespace API.Controllers
             }
             _context.Clinics.Add(clinic);
             await _context.SaveChangesAsync();
-        
+
             return CreatedAtAction("GetClinic", new { id = clinic.ClinicId }, clinic);
         }
 
