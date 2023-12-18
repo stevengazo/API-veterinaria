@@ -49,6 +49,7 @@ namespace API.Controllers
             }
             else
             {
+                login.HashPassword = string.Empty;
                 return Ok(login);
             }
 

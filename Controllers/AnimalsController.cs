@@ -45,8 +45,15 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-             return  await _context.Animals.Include(A=>A.customer).Include(A=>A.TypeAnimal).ToListAsync();
+            return await _context.Animals.Include(A => A.customer).Include(A => A.TypeAnimal).ToListAsync();
         }
+
+        [HttpGet("ByUser/{id}")]
+        public async Task<ActionResult<IEnumerable<Animal>>> GetAnimalsByCustomer(int id)
+        {
+            return await _context.Animals.Include(i=>i.TypeAnimal).Where(i=>i.CustomerId == id).ToListAsync();
+        }
+
 
         [HttpPost("UploadFile/{id}")]
         public async Task<ActionResult<string>> UploadFile(IFormFile data, int id)
@@ -62,7 +69,7 @@ namespace API.Controllers
                 {
                     using (var stream = data.OpenReadStream())
                     {
-                        var blobName =  $"Image_{AnimalSelected.AnimalId}_{AnimalSelected.Name}.{Path.GetExtension( data.FileName)}"  ;
+                        var blobName = $"Image_{AnimalSelected.AnimalId}_{AnimalSelected.Name}.{Path.GetExtension(data.FileName)}";
                         var d = _blobServiceClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
                         d.DeleteIfExists();
                         // Sube el blob al contenedor
@@ -95,7 +102,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            var animal = await _context.Animals.Include(a=>a.customer).Include(a=>a.TypeAnimal).FirstAsync(F=>F.AnimalId == id);
+            var animal = await _context.Animals.Include(a => a.customer).Include(a => a.TypeAnimal).FirstAsync(F => F.AnimalId == id);
 
             if (animal == null)
             {

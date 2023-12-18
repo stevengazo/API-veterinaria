@@ -25,11 +25,11 @@ public class Animal
     #endregion
 
     #region List of Relations
-    public ICollection<Appointment> Appointments { get; set; }
-    public ICollection<Diagnostic> Diagnostics { get; set; }
-    public ICollection<Recipe> Recipes { get; set; }
-    public ICollection<Surgery> Surgeries { get; set; }
-    public ICollection<Vaccine> Vaccines { get; set; }
+    public ICollection<Appointment>? Appointments { get; set; }
+    public ICollection<Diagnostic>? Diagnostics { get; set; }
+    public ICollection<Recipe>? Recipes { get; set; }
+    public ICollection<Surgery>? Surgeries { get; set; }
+    public ICollection<Vaccine>? Vaccines { get; set; }
 
     #endregion 
 }
