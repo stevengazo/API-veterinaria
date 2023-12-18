@@ -193,6 +193,7 @@ namespace API.Controllers
             _context.Clinics.Add(clinic);
             await _context.SaveChangesAsync();
 
+            return CreatedAtAction("GetClinic", new { id = clinic.ClinicId }, clinic);
         }
 
         // DELETE: api/Clinic/5
