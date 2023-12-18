@@ -137,8 +137,8 @@ namespace API.Controllers
 
         // PUT: api/Veterinarian/5 Este put modifica solamente la contraseña
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("EditProfile/{id}")]
-        public async Task<IActionResult> PutClinicWithout(int id, Clinic clinic)
+        [HttpPut("EditProfilePassword/{id}")]
+        public async Task<IActionResult> PutClinicPassword(int id, Clinic clinic)
         {
             if (id != clinic.ClinicId)
             {
