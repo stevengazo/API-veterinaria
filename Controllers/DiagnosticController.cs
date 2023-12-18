@@ -60,6 +60,19 @@ namespace API.Controllers
             return diagnostic;
         }
 
+        [HttpGet("GetByVeterinarian/{id}")]
+        public async Task<ActionResult<IEnumerable<Diagnostic>>> GetByVeterinarian(int id)
+        {
+            return await _context.Diagnostics
+                        .Include(D => D.Inscription.Veterinarian)
+                        .Include(D => D.Inscription.Clinic)
+                        .Where(D => D.InscriptionId == id)
+                        .Include(A => A.Animal)
+                        .ThenInclude(A => A.customer)
+                        .OrderByDescending(a => a.CreationDate)
+                        .ToListAsync();
+        }
+
         // PUT: api/Diagnostic/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
