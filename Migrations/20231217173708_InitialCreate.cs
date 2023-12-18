@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace API.Migrations
 {
     /// <inheritdoc />
@@ -96,6 +98,7 @@ namespace API.Migrations
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HashPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DNI = table.Column<int>(type: "int", nullable: false),
                     IdentificationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -388,6 +391,103 @@ namespace API.Migrations
                         column: x => x.InscriptionId,
                         principalTable: "Inscriptions",
                         principalColumn: "InscriptionId");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Provinces",
+                columns: new[] { "ProvinceId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "San José" },
+                    { 2, "Alajuela" },
+                    { 3, "Cartago" },
+                    { 4, "Heredia" },
+                    { 5, "Puntarenas" },
+                    { 6, "Limón" },
+                    { 7, "Guanacaste" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Sexes",
+                columns: new[] { "SexId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Hombre" },
+                    { 2, "Mujer" },
+                    { 3, "Otro" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TypeAnimals",
+                columns: new[] { "TypeAnimalId", "TypeName" },
+                values: new object[,]
+                {
+                    { 1, "Perro" },
+                    { 2, "Gato" },
+                    { 3, "Conejo" },
+                    { 4, "Ave" },
+                    { 5, "Cabra" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cantons",
+                columns: new[] { "CantonId", "Name", "ProvinceId" },
+                values: new object[,]
+                {
+                    { 1, "San José", 1 },
+                    { 2, "San Pedro", 1 },
+                    { 3, "Alajuela", 2 },
+                    { 4, "Grecia", 2 },
+                    { 5, "Cartago", 3 },
+                    { 6, "Paraíso", 3 },
+                    { 7, "Santo Domingo", 4 },
+                    { 8, "San Pablo", 4 },
+                    { 9, "Puntarenas", 5 },
+                    { 10, "Quepos", 5 },
+                    { 11, "Limón", 6 },
+                    { 12, "Guapiles", 6 },
+                    { 13, "Guanacaste", 7 },
+                    { 14, "Nicoya", 7 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "CustomerId", "DNI", "Email", "HashPassword", "IdentificationType", "LastName", "Name", "PhoneNumber", "SecondLastName", "SexId", "UserName" },
+                values: new object[] { 1, 11111, "sample@mail.com", "default", "National", "Prueba", "nombre", 888888, "prueba", 1, "default" });
+
+            migrationBuilder.InsertData(
+                table: "Districts",
+                columns: new[] { "DistrictId", "CantonId", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "San Miguel" },
+                    { 2, 1, "Escazú" },
+                    { 3, 2, "San Pedro" },
+                    { 4, 2, "San Rafael" },
+                    { 5, 3, "Alajuela" },
+                    { 6, 3, "San Ramón" },
+                    { 7, 4, "Grecia" },
+                    { 8, 4, "Sarchí" },
+                    { 9, 5, "Cartago" },
+                    { 10, 5, "Paraíso" },
+                    { 11, 6, "Santo Domingo" },
+                    { 12, 6, "San Vicente" },
+                    { 13, 7, "Santo Domingo" },
+                    { 14, 7, "San Juanillo" },
+                    { 15, 8, "San Pablo" },
+                    { 16, 8, "San Isidro" },
+                    { 17, 9, "Puntarenas" },
+                    { 18, 9, "Chacarita" },
+                    { 19, 10, "Quepos" },
+                    { 20, 10, "Parrita" },
+                    { 21, 11, "Limón" },
+                    { 22, 11, "Guácimo" },
+                    { 23, 12, "Guápiles" },
+                    { 24, 12, "Siquirres" },
+                    { 25, 13, "Liberia" },
+                    { 26, 13, "Santa Cruz" },
+                    { 27, 14, "Nicoya" },
+                    { 28, 14, "Santa Cruz" }
                 });
 
             migrationBuilder.CreateIndex(

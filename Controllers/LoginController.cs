@@ -9,33 +9,52 @@ using Microsoft.AspNetCore.Identity;
 using API.DBContexts;
 using API.Models;
 
-namespace API.Controllers{
+namespace API.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
-{
-    private readonly VeterinarianDB _context;
-
-    public LoginController(VeterinarianDB context)
     {
-        _context = context;
-    }
+        private readonly VeterinarianDB _context;
 
-    [HttpPost("Clinic")]
-    public async Task<IActionResult> Clinic([FromBody] Login model)
-    {
-        var login = await _context.Clinics
-            .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);
-
-        if (login == null)
+        public LoginController(VeterinarianDB context)
         {
-            return Unauthorized();
+            _context = context;
         }
 
+        [HttpPost("Clinic")]
+        public async Task<IActionResult> Clinic([FromBody] Login model)
+        {
+            var login = await _context.Clinics
+                .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);
+
+            if (login == null)
+            {
+                return Unauthorized();
+            }
         // Aquí puedes generar un token de autenticación si lo deseas.
 
-        return Ok(new { Message = "Login exitoso", ok = true });
+            return Ok(new { Message = "Login exitoso", ok = true });
+        }
+
+
+        [HttpPost("Customer")]
+        public async Task<IActionResult> Customer([FromBody] Login model)
+        {
+            var login = await _context.Customers
+                .FirstOrDefaultAsync(c => c.UserName == model.UserName && c.HashPassword == model.HashPassword);
+
+            if (login == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                login.HashPassword = string.Empty;
+                return Ok(login);
+            }
+
+        }
     }
-}
 
 }

@@ -57,6 +57,7 @@ GO
 CREATE TABLE [Customers] (
     [CustomerId] int NOT NULL IDENTITY,
     [UserName] nvarchar(max) NOT NULL,
+    [HashPassword] nvarchar(max) NOT NULL,
     [DNI] int NOT NULL,
     [IdentificationType] nvarchar(max) NOT NULL,
     [Name] nvarchar(max) NOT NULL,
@@ -195,6 +196,106 @@ CREATE TABLE [Vaccines] (
 );
 GO
 
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'ProvinceId', N'Name') AND [object_id] = OBJECT_ID(N'[Provinces]'))
+    SET IDENTITY_INSERT [Provinces] ON;
+INSERT INTO [Provinces] ([ProvinceId], [Name])
+VALUES (1, N'San José'),
+(2, N'Alajuela'),
+(3, N'Cartago'),
+(4, N'Heredia'),
+(5, N'Puntarenas'),
+(6, N'Limón'),
+(7, N'Guanacaste');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'ProvinceId', N'Name') AND [object_id] = OBJECT_ID(N'[Provinces]'))
+    SET IDENTITY_INSERT [Provinces] OFF;
+GO
+
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'SexId', N'Name') AND [object_id] = OBJECT_ID(N'[Sexes]'))
+    SET IDENTITY_INSERT [Sexes] ON;
+INSERT INTO [Sexes] ([SexId], [Name])
+VALUES (1, N'Hombre'),
+(2, N'Mujer'),
+(3, N'Otro');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'SexId', N'Name') AND [object_id] = OBJECT_ID(N'[Sexes]'))
+    SET IDENTITY_INSERT [Sexes] OFF;
+GO
+
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'TypeAnimalId', N'TypeName') AND [object_id] = OBJECT_ID(N'[TypeAnimals]'))
+    SET IDENTITY_INSERT [TypeAnimals] ON;
+INSERT INTO [TypeAnimals] ([TypeAnimalId], [TypeName])
+VALUES (1, N'Perro'),
+(2, N'Gato'),
+(3, N'Conejo'),
+(4, N'Ave'),
+(5, N'Cabra');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'TypeAnimalId', N'TypeName') AND [object_id] = OBJECT_ID(N'[TypeAnimals]'))
+    SET IDENTITY_INSERT [TypeAnimals] OFF;
+GO
+
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'CantonId', N'Name', N'ProvinceId') AND [object_id] = OBJECT_ID(N'[Cantons]'))
+    SET IDENTITY_INSERT [Cantons] ON;
+INSERT INTO [Cantons] ([CantonId], [Name], [ProvinceId])
+VALUES (1, N'San José', 1),
+(2, N'San Pedro', 1),
+(3, N'Alajuela', 2),
+(4, N'Grecia', 2),
+(5, N'Cartago', 3),
+(6, N'Paraíso', 3),
+(7, N'Santo Domingo', 4),
+(8, N'San Pablo', 4),
+(9, N'Puntarenas', 5),
+(10, N'Quepos', 5),
+(11, N'Limón', 6),
+(12, N'Guapiles', 6),
+(13, N'Guanacaste', 7),
+(14, N'Nicoya', 7);
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'CantonId', N'Name', N'ProvinceId') AND [object_id] = OBJECT_ID(N'[Cantons]'))
+    SET IDENTITY_INSERT [Cantons] OFF;
+GO
+
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'CustomerId', N'DNI', N'Email', N'HashPassword', N'IdentificationType', N'LastName', N'Name', N'PhoneNumber', N'SecondLastName', N'SexId', N'UserName') AND [object_id] = OBJECT_ID(N'[Customers]'))
+    SET IDENTITY_INSERT [Customers] ON;
+INSERT INTO [Customers] ([CustomerId], [DNI], [Email], [HashPassword], [IdentificationType], [LastName], [Name], [PhoneNumber], [SecondLastName], [SexId], [UserName])
+VALUES (1, 11111, N'sample@mail.com', N'default', N'National', N'Prueba', N'nombre', 888888, N'prueba', 1, N'default');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'CustomerId', N'DNI', N'Email', N'HashPassword', N'IdentificationType', N'LastName', N'Name', N'PhoneNumber', N'SecondLastName', N'SexId', N'UserName') AND [object_id] = OBJECT_ID(N'[Customers]'))
+    SET IDENTITY_INSERT [Customers] OFF;
+GO
+
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'DistrictId', N'CantonId', N'Name') AND [object_id] = OBJECT_ID(N'[Districts]'))
+    SET IDENTITY_INSERT [Districts] ON;
+INSERT INTO [Districts] ([DistrictId], [CantonId], [Name])
+VALUES (1, 1, N'San Miguel'),
+(2, 1, N'Escazú'),
+(3, 2, N'San Pedro'),
+(4, 2, N'San Rafael'),
+(5, 3, N'Alajuela'),
+(6, 3, N'San Ramón'),
+(7, 4, N'Grecia'),
+(8, 4, N'Sarchí'),
+(9, 5, N'Cartago'),
+(10, 5, N'Paraíso'),
+(11, 6, N'Santo Domingo'),
+(12, 6, N'San Vicente'),
+(13, 7, N'Santo Domingo'),
+(14, 7, N'San Juanillo'),
+(15, 8, N'San Pablo'),
+(16, 8, N'San Isidro'),
+(17, 9, N'Puntarenas'),
+(18, 9, N'Chacarita'),
+(19, 10, N'Quepos'),
+(20, 10, N'Parrita'),
+(21, 11, N'Limón'),
+(22, 11, N'Guácimo'),
+(23, 12, N'Guápiles'),
+(24, 12, N'Siquirres'),
+(25, 13, N'Liberia'),
+(26, 13, N'Santa Cruz'),
+(27, 14, N'Nicoya'),
+(28, 14, N'Santa Cruz');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'DistrictId', N'CantonId', N'Name') AND [object_id] = OBJECT_ID(N'[Districts]'))
+    SET IDENTITY_INSERT [Districts] OFF;
+GO
+
 CREATE INDEX [IX_Animals_CustomerId] ON [Animals] ([CustomerId]);
 GO
 
@@ -259,7 +360,7 @@ CREATE INDEX [IX_veterinarians_SexId] ON [veterinarians] ([SexId]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20231211024109_InitialCreate', N'7.0.14');
+VALUES (N'20231217173708_InitialCreate', N'7.0.14');
 GO
 
 COMMIT;
