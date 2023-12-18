@@ -36,7 +36,7 @@ namespace API.Controllers
             return await _context.Recipes
                         .Include(D => D.Inscription.Veterinarian)
                         .Include(D => D.Inscription.Clinic)
-                        .Where(D => D.InscriptionId == id)
+                        .Where(D => D.Inscription.VeterinarianId == id)
                         .Include(A => A.Animal)
                         .ThenInclude(A => A.customer)
                         .OrderByDescending(a => a.CreationDate)
