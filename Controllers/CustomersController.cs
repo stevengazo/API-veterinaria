@@ -206,7 +206,51 @@ namespace API.Controllers
             return NoContent();
         }
 
+// PUT: api/Veterinarian/5 Este put modifica solamente la contraseña
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("EditProfilePassword/{id}")]
+        public async Task<IActionResult> PutClinicPassword(int id, Customer customer)
+        {
+            if (id != customer.CustomerId)
+            {
+                return BadRequest();
+                //return NotFound();
+            }
 
+            // Evitar que se modifique el campo hashPassword
+            var existingCustomer = await _context.Customers.FindAsync(id);
+
+            if (existingCustomer == null)
+            {
+                return NotFound();
+            }
+
+            // Copiar los valores permitidos desde el objeto enviado al objeto existente
+            //existingClinic.ClinicId = clinic.ClinicId;
+            existingCustomer.HashPassword = customer.HashPassword;
+
+            _context.Customers.Update(existingCustomer);
+
+            //  _context.Entry(existingClinic).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CustomerExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
 
 
 
