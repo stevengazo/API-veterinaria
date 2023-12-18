@@ -50,6 +50,23 @@ namespace API.Controllers
             return customer;
         }
 
+        [HttpGet("{UserName}")]
+        public async Task<ActionResult<Customer>> GetCustomerUsername(String UserName)
+        {
+            if (_context.Customers == null)
+            {
+                return NotFound();
+            }
+            var customer = _context.Customers.Where((e) => e.UserName == UserName).FirstOrDefault();
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            //customer.HashPassword=String.Empty;
+            return customer;
+        }
+
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -85,6 +102,71 @@ namespace API.Controllers
 
             return NoContent();
         }
+
+
+
+        //Con esto editamos sin cambiar la contrase;a
+        [HttpPut("EditProfile/{id}")]
+        public async Task<IActionResult> PutCustomerWithout(int id, Customer customer)
+        {
+            if (id != customer.CustomerId)
+            {
+                return BadRequest();
+                //return NotFound();
+            }
+
+            // Evitar que se modifique el campo hashPassword
+            var existingCustomer = await _context.Customers.FindAsync(id);
+
+            if (existingCustomer == null)
+            {
+                return NotFound();
+            }
+
+            // Copiar los valores permitidos desde el objeto enviado al objeto existente
+            //existingClinic.ClinicId = clinic.ClinicId;
+            existingCustomer.UserName = customer.UserName;
+            existingCustomer.Name = customer.Name;
+            existingCustomer.DNI = customer.DNI;
+            existingCustomer.Name = customer.Name;
+            existingCustomer.LastName = customer.LastName;
+
+            existingCustomer.SecondLastName = customer.SecondLastName;
+            existingCustomer.PhoneNumber = customer.PhoneNumber;
+            existingCustomer.Email = customer.Email;
+            existingCustomer.SexId = customer.SexId;
+            // Otros campos que deseas permitir
+
+            _context.Customers.Update(existingCustomer);
+
+            //  _context.Entry(existingClinic).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CustomerExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+
+
+
+
+
+
 
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
