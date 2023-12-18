@@ -22,26 +22,48 @@ namespace API.Controllers
         }
 
         [HttpGet("GetByClinic/{id}")]
-        public async Task<ActionResult<IEnumerable<Inscription>>> GetByClinic(int id){
-          if (_context.Inscriptions == null)
-          {
-              return NotFound();
-          }
+        public async Task<ActionResult<IEnumerable<Inscription>>> GetByClinic(int id)
+        {
+            if (_context.Inscriptions == null)
+            {
+                return NotFound();
+            }
             return await _context.Inscriptions
-                .Include(I=>I.Veterinarian)
-                .Include(I=>I.Clinic)
-                .Where(i=>i.ClinicId == id)
-                .ToListAsync();   
+                .Include(I => I.Veterinarian)
+                .Include(I => I.Clinic)
+                .Where(i => i.ClinicId == id)
+                .ToListAsync();
+        }
+
+
+        [HttpGet("GetAvariableVeterinarians/{id}")]
+        public async Task<ActionResult<IEnumerable<Veterinarian>>> GetAvariableVeterinarians(int id)
+        {
+            if (_context.Inscriptions == null)
+            {
+                return NotFound();
+            }
+
+            var DATA = _context.veterinarians.FromSqlRaw(@"SELECT C.*
+                                                            FROM veterinarians AS C
+                                                            WHERE C.VeterinarianId NOT IN (
+                                                                SELECT VeterinarianId
+                                                                FROM Inscriptions 
+                                                                WHERE ClinicId = {0}
+                                                            );
+                                                            ", id);
+
+            return Ok(DATA.ToList());
         }
 
         // GET: api/Inscriptions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Inscription>>> GetInscriptions()
         {
-          if (_context.Inscriptions == null)
-          {
-              return NotFound();
-          }
+            if (_context.Inscriptions == null)
+            {
+                return NotFound();
+            }
             return await _context.Inscriptions.ToListAsync();
         }
 
@@ -49,10 +71,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Inscription>> GetInscription(int id)
         {
-          if (_context.Inscriptions == null)
-          {
-              return NotFound();
-          }
+            if (_context.Inscriptions == null)
+            {
+                return NotFound();
+            }
             var inscription = await _context.Inscriptions.FindAsync(id);
 
             if (inscription == null)
@@ -99,10 +121,10 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Inscription>> PostInscription(Inscription inscription)
         {
-          if (_context.Inscriptions == null)
-          {
-              return Problem("Entity set 'VeterinarianDB.Inscriptions'  is null.");
-          }
+            if (_context.Inscriptions == null)
+            {
+                return Problem("Entity set 'VeterinarianDB.Inscriptions'  is null.");
+            }
             _context.Inscriptions.Add(inscription);
             await _context.SaveChangesAsync();
 
