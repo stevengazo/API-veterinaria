@@ -34,7 +34,7 @@ namespace API.Controllers{
 
         // Aquí puedes generar un token de autenticación si lo deseas.
 
-        return Ok(new { Message = "Login exitoso" });
+        return Ok(new { Message = "Login exitoso", ok = true });
     }
 }
 
