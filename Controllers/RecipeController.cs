@@ -29,6 +29,20 @@ namespace API.Controllers
                                 .Where(D => D.AnimalId == id)
                                 .ToListAsync();
         }
+
+        [HttpGet("GetByVeterinarian/{id}")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetByVeterinarian(int id)
+        {
+            return await _context.Recipes
+                        .Include(D => D.Inscription.Veterinarian)
+                        .Include(D => D.Inscription.Clinic)
+                        .Where(D => D.InscriptionId == id)
+                        .Include(A => A.Animal)
+                        .ThenInclude(A => A.customer)
+                        .OrderByDescending(a => a.CreationDate)
+                        .ToListAsync();
+        }
+
         // GET: api/Recipe
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
