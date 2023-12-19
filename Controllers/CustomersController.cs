@@ -33,7 +33,7 @@ namespace API.Controllers
         }
 
         // GET: api/Customers/5
-        [HttpGet("{id}")]
+        [HttpGet("ById/{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
             if (_context.Customers == null)
@@ -50,7 +50,7 @@ namespace API.Controllers
             return customer;
         }
 
-// PUT: api/Veterinarian/5 Este put modifica solamente la contraseña
+        // PUT: api/Veterinarian/5 Este put modifica solamente la contraseña
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("EditProfilePassword/{id}")]
         public async Task<IActionResult> PutClinicPassword(int id, Customer customer)
@@ -60,21 +60,21 @@ namespace API.Controllers
                 return BadRequest();
                 //return NotFound();
             }
- 
+
             // Evitar que se modifique el campo hashPassword
             var existingCustomer = await _context.Customers.FindAsync(id);
- 
+
             if (existingCustomer == null)
             {
                 return NotFound();
             }
- 
+
             // Copiar los valores permitidos desde el objeto enviado al objeto existente
             //existingClinic.ClinicId = clinic.ClinicId;
             existingCustomer.HashPassword = customer.HashPassword;
- 
+
             _context.Customers.Update(existingCustomer);
- 
+
 
             try
             {
@@ -91,10 +91,10 @@ namespace API.Controllers
                     throw;
                 }
             }
- 
+
             return NoContent();
         }
- 
+
 
         [HttpGet("{UserName}")]
         public async Task<ActionResult<Customer>> GetCustomerUsername(String UserName)
@@ -115,40 +115,25 @@ namespace API.Controllers
 
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+    /*   [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
             if (id != customer.CustomerId)
             {
                 return BadRequest();
-            }
-
-
-
-            try
-            {
-                var cust = _context.Customers.FirstOrDefault(i => i.CustomerId == id);
-                customer.HashPassword = cust.HashPassword;
-
+            }else{
+                Console.WriteLine("ID customer: "+ id);
+                var Dat= _context.Customers.FirstOrDefault( i=> i.CustomerId == id).HashPassword.ToString();
+                customer.HashPassword= Dat;
                 _context.Customers.Update(customer);
-
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _context.SaveChanges();
+                return Ok();
             }
 
+    
             return NoContent();
         }
-
+*/
 
 
         //Con esto editamos sin cambiar la contrase;a
@@ -182,52 +167,6 @@ namespace API.Controllers
             existingCustomer.Email = customer.Email;
             existingCustomer.SexId = customer.SexId;
             // Otros campos que deseas permitir
-
-            _context.Customers.Update(existingCustomer);
-
-            //  _context.Entry(existingClinic).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-// PUT: api/Veterinarian/5 Este put modifica solamente la contraseña
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("EditProfilePassword/{id}")]
-        public async Task<IActionResult> PutClinicPassword(int id, Customer customer)
-        {
-            if (id != customer.CustomerId)
-            {
-                return BadRequest();
-                //return NotFound();
-            }
-
-            // Evitar que se modifique el campo hashPassword
-            var existingCustomer = await _context.Customers.FindAsync(id);
-
-            if (existingCustomer == null)
-            {
-                return NotFound();
-            }
-
-            // Copiar los valores permitidos desde el objeto enviado al objeto existente
-            //existingClinic.ClinicId = clinic.ClinicId;
-            existingCustomer.HashPassword = customer.HashPassword;
 
             _context.Customers.Update(existingCustomer);
 
